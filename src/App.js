@@ -4,6 +4,7 @@ import { Table, message } from "antd";
 import qs from "query-string";
 
 import SearchBar from "./SearchBar";
+import Details from "./Details";
 import "./App.css";
 import "antd/dist/antd.css";
 import { ENDPOINT } from "./config";
@@ -68,7 +69,7 @@ class App extends React.Component {
           bordered
           expandable={{
             expandedRowRender: record => (
-              <p style={{ margin: 0 }}>{record.paymentDetail}</p>
+              <p style={{ margin: 0 }}>{<Details data={record} />}</p>
             )
           }}
         />
