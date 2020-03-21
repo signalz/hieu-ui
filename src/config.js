@@ -1,1 +1,2 @@
-export const ENDPOINT = "localhost:8080/transaction";
+export const ENDPOINT =
+  "http://5e762ca975012c00165e48b9.mockapi.io/transactions";

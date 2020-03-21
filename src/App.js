@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { Table } from "antd";
+import { Table, message } from "antd";
 import qs from "query-string";
 
 import SearchBar from "./SearchBar";
@@ -21,10 +21,20 @@ class App extends React.Component {
   }
 
   fetchData = searchObj => {
-    fetch(`${ENDPOINT}?${qs.stringify(searchObj)}`)
-      .then(res => res.json())
-      .then(data => this.setState({ data }))
-      .catch(e => console.log(e));
+    const { accNo, startDate, endDate } = searchObj;
+    const queryObj = {
+      accNo,
+      from: moment(startDate).format("YYYY-MM-DD"),
+      to: moment(endDate).format("YYYY-MM-DD")
+    };
+    message.loading("Loading data ...", 1);
+    fetch(`${ENDPOINT}?${qs.stringify(queryObj)}`)
+      .then(res => (res.ok ? res.json() : Promise.reject("Something wrong")))
+      .then(data => {
+        this.setState({ data });
+        message.success("Load data successfully");
+      })
+      .catch(e => message.error(e));
   };
 
   render() {
