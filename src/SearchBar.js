@@ -27,7 +27,7 @@ export default class SearchBar extends React.Component {
     }
   };
 
-  onSearchClick = () => console.log(this.state);
+  onSearchClick = () => this.props.onSearch(this.state);
 
   render() {
     const { startDate, endDate, accNo } = this.state;
@@ -35,7 +35,7 @@ export default class SearchBar extends React.Component {
       <div
         style={{
           display: "flex",
-          minWidth: 500
+          flexWrap: "wrap"
         }}
       >
         <RangePicker
@@ -43,15 +43,17 @@ export default class SearchBar extends React.Component {
           onChange={this.onRangePickerChange}
           style={{
             marginRight: 20,
+            marginBottom: 20,
             width: "40%"
           }}
         />
         <Input
           placeholder="Account number"
           value={accNo}
-          onChange={e => this.setState({ accNo: e.value })}
+          onChange={e => this.setState({ accNo: e.target.value })}
           style={{
             marginRight: 20,
+            marginBottom: 20,
             width: "40%"
           }}
         />
