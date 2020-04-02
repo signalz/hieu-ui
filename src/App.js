@@ -17,10 +17,6 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchData({});
-  }
-
   fetchData = searchObj => {
     const { accNo, startDate, endDate } = searchObj;
     const queryObj = {
