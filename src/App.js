@@ -13,25 +13,26 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
     };
   }
 
-  fetchData = searchObj => {
+  fetchData = (searchObj) => {
     const { accNo, startDate, endDate } = searchObj;
+    console.log(moment().isValid(startDate));
     const queryObj = {
-      accNo,
-      from: moment(startDate).format("YYYY-MM-DD"),
-      to: moment(endDate).format("YYYY-MM-DD")
+      accNo: accNo || null,
+      from: startDate ? moment(startDate).format("YYYY-MM-DD") : null,
+      to: endDate ? moment(endDate).format("YYYY-MM-DD") : null,
     };
     message.loading("Loading data ...", 1);
     fetch(`${ENDPOINT}?${qs.stringify(queryObj)}`)
-      .then(res => (res.ok ? res.json() : Promise.reject("Something wrong")))
-      .then(data => {
+      .then((res) => (res.ok ? res.json() : Promise.reject("Something wrong")))
+      .then((data) => {
         this.setState({ data });
         message.success("Load data successfully");
       })
-      .catch(e => message.error(e));
+      .catch((e) => message.error(e));
   };
 
   render() {
@@ -39,34 +40,34 @@ class App extends React.Component {
     const columns = [
       {
         title: "Account Number",
-        dataIndex: "accNo"
+        dataIndex: "accNo",
       },
       {
         title: "Account Name",
-        dataIndex: "accName"
+        dataIndex: "accName",
       },
       {
         title: "Date",
         dataIndex: "transactionDate",
-        render: text => moment(text).format("YYYY-MM-DD HH:mm:ss")
+        render: (text) => moment(text).format("YYYY-MM-DD HH:mm:ss"),
       },
       {
         title: "Amount",
-        dataIndex: "amount"
-      }
+        dataIndex: "amount",
+      },
     ];
 
     return (
       <div className="app-container">
-        <SearchBar onSearch={searchObj => this.fetchData(searchObj)} />
+        <SearchBar onSearch={(searchObj) => this.fetchData(searchObj)} />
         <Table
           columns={columns}
           dataSource={data}
           bordered
           expandable={{
-            expandedRowRender: record => (
+            expandedRowRender: (record) => (
               <p style={{ margin: 0 }}>{<Details data={record} />}</p>
-            )
+            ),
           }}
         />
       </div>
